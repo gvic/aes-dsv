@@ -1,9 +1,12 @@
 package com;
 
 public class Worker {
-	OrderList allOrders;
+	private OrderList allOrders;
 	
 	public Worker(OrderList allOrders) {
+		// PUT THE ITEMS LIST IN ORDER TO UPDATE IT 
+		// WHEN AN ORDER IS PROCESSED IN THE
+		// processOneOrder METHOD ?
 		
 		this.allOrders = allOrders;
 	}

@@ -1,16 +1,27 @@
 package com;
 
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.HashMap;
 import java.util.Scanner;
-import java.io.*;
 
 public class Manager
 {
+	
+	private File ordersFile;
+	private File itemsFile;
 	private Worker worker;   
     private OrderList allOrders;
+	private HashMap<Integer, IItem> items;
+
    
-    public Manager()
+    public Manager(File fi, File fo)
     {
+    	itemsFile = fi;
+		ordersFile = fo;
     	allOrders = new  OrderList();
+		items = new HashMap<Integer, IItem>();
     }
     
     //initialises list of orders, processes them
@@ -20,21 +31,32 @@ public class Manager
     }
 
     //alter this method 
-    //initialises list of orders
+    //initialises list of orders and also loads items
     public void initialise() {
     	try {
-    		Scanner scanner = new Scanner (new File("Orders.txt"));
+    		Scanner scanner = new Scanner (ordersFile);
         	while(scanner.hasNext()){  
             	String inputLine = scanner.nextLine();
+            	String[] datas = inputLine.split(";");
             	//probably need to do something with the line here
-        		Order order= new Order (inputLine);
+        		Order order= new Order (datas);
         		//add to list
                 allOrders.addDetails(order);
         	}
+        	
+        	scanner = new Scanner(itemsFile);
+        	while(scanner.hasNext()){  
+            	String inputLine = scanner.nextLine();
+            	String[] datas = inputLine.split(";");
+            	IItem i = new BookItem(datas);
+            	items.put(i.getId(), i);
+        	}
+            	
     	}
     	catch (FileNotFoundException e) {
     		//do something here
     	}
+    	
     }
     
     //the worker works through the orders
@@ -48,7 +70,21 @@ public class Manager
     
     //start the program
     public static void main (String args[]) {
-    	Manager manager = new Manager();
+    	if (args.length != 2) {
+			System.out.println("USAGE");
+			System.out.println("java com.Manager <items_file_name> <orders_file_name>");
+			System.exit(0);
+		}
+    	
+    	File fi = new File(args[0]);
+    	File fo = new File(args[1]);
+    	
+//    	if(!fi.exists() || !fo.exists()){
+//    		System.out.println("One or both of the specified files does not exist");
+//			System.exit(0);
+//    	}
+    		
+    	Manager manager = new Manager(fi, fo);
     	manager.run();
     }
 }
