@@ -1,0 +1,18 @@
+class Order
+!!!133250.java!!!	Order(in id : String)
+   
+        this.id =id.trim();
+!!!133378.java!!!	getId() : String
+    	return id;
+!!!133506.java!!!	equals(inout other : Object) : boolean
+        if(other instanceof Order) {
+            Order otherItem = (Order) other;
+            return id.equals(otherItem.getId());
+        }
+        else {
+            return false;
+        }
+!!!133634.java!!!	compareTo(inout otherDetails : Order) : int
+        return id.compareTo(otherDetails.getId());
+!!!133762.java!!!	toString() : String
+        return id;

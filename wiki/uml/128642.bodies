@@ -1,0 +1,18 @@
+class OrderList
+!!!131586.java!!!	OrderList()
+    	orderList =new ArrayList<Order>() ;
+!!!131714.java!!!	addDetails(inout details : Order) : void
+    	orderList.add(details);
+!!!131842.java!!!	hasOrder() : boolean
+    	return orderList.size() != 0;
+!!!131970.java!!!	getNextOrder() : Order
+    	Order order =  orderList.remove(0);
+    	return order;
+
+!!!132098.java!!!	listDetails() : String
+    	StringBuffer allEntries = new StringBuffer();
+    	for (Order details : orderList) {
+            allEntries.append(details.getId() );
+            allEntries.append('\n');
+        }
+        return allEntries.toString();

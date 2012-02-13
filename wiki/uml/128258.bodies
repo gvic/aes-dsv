@@ -1,0 +1,13 @@
+class BookItem
+!!!129154.java!!!	BookItem(inout datas : String)
+		// The first 3 array cells stands for id, unit price, and quantity 
+		super(datas);
+		title = datas[3];
+		author = datas[4];
+		category = datas[5];
+!!!129282.java!!!	getTitle() : String
+		return title;
+!!!129410.java!!!	getAuthor() : String
+		return author;
+!!!129538.java!!!	getCategory() : String
+		return category;

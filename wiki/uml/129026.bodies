@@ -1,0 +1,26 @@
+class Manager
+!!!132610.java!!!	Manager()
+    	allOrders = new  OrderList();
+!!!132738.java!!!	run() : void
+    	this.initialise();
+    	this.process();
+!!!132866.java!!!	initialise() : void
+    	try {
+    		Scanner scanner = new Scanner (new File("Orders.txt"));
+        	while(scanner.hasNext()){  
+            	String inputLine = scanner.nextLine();
+            	//probably need to do something with the line here
+        		Order order= new Order (inputLine);
+        		//add to list
+                allOrders.addDetails(order);
+        	}
+    	}
+    	catch (FileNotFoundException e) {
+    		//do something here
+    	}
+!!!132994.java!!!	process() : void
+    	worker = new Worker (allOrders);
+    	worker.run();
+!!!133122.java!!!	main(inout args : String) : void
+    	Manager manager = new Manager();
+    	manager.run();

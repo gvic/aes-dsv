@@ -1,0 +1,13 @@
+class AItem
+!!!128514.java!!!	AItem(inout datas : String)
+		id = Integer.parseInt(datas[0]);
+		unitPrice = Double.parseDouble(datas[1]);
+		quantity = Integer.parseInt(datas[2]);
+!!!128642.java!!!	getId() : int
+		return id;
+!!!128770.java!!!	getUnitPrice() : double
+		return unitPrice;
+!!!128898.java!!!	getQuantity() : int
+		return quantity;
+!!!129026.java!!!	setQuantity(in i : int) : void
+		quantity = i;

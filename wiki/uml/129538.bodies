@@ -1,0 +1,7 @@
+class AllTests
+!!!134914.java!!!	suite() : Test
+		TestSuite suite = new TestSuite(AllTests.class.getName());
+		//$JUnit-BEGIN$
+
+		//$JUnit-END$
+		return suite;

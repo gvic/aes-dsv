@@ -1,0 +1,42 @@
+class Order
+!!!130306.java!!!	Order(inout datas : String)
+		id = datas[0].trim();
+		customerId = datas[1].trim();
+		itemId = Integer.parseInt(datas[2].trim());
+		quantity = Integer.parseInt(datas[3].trim());
+!!!130434.java!!!	Order(in id : String)
+		this.id = id.trim();
+!!!130562.java!!!	getId() : String
+		return id;
+!!!130690.java!!!	equals(inout other : Object) : boolean
+		if (other instanceof Order) {
+			Order otherItem = (Order) other;
+			return id.equals(otherItem.getId());
+		} else {
+			return false;
+		}
+!!!130818.java!!!	compareTo(inout otherDetails : Order) : int
+		return id.compareTo(otherDetails.getId());
+!!!130946.java!!!	getCustomerId() : String
+		return customerId;
+!!!131074.java!!!	getItemId() : int
+		return itemId;
+!!!131202.java!!!	getQuantity() : int
+		return quantity;
+!!!131330.java!!!	getDiscountPercent() : int
+		String key = customerId.substring(0, 2);
+		int discount = 0;
+		if (key == "STD" && quantity >= 50)
+			discount = 10;
+		if (key == "VIP") {
+			discount = 10;
+			int n = (int) (Math.floor(quantity / 50) - 1);
+			discount += n * 5;
+		}
+		return discount;
+!!!131458.java!!!	toString() : String
+		String ret = "Order ID..... " + id + "\n";
+		ret += "Customer ID.. " + customerId + "\n";
+		ret += "Item ID...... " + itemId + "\n";
+		ret += "Quantity..... " + quantity + "\n";
+		return ret;

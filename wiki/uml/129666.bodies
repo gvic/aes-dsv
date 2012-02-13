@@ -1,0 +1,5 @@
+class Order
+!!!135042.java!!!	testEqualsObject() : void
+		fail("Not yet implemented"); // TODO
+!!!135170.java!!!	testCompareTo() : void
+		fail("Not yet implemented"); // TODO

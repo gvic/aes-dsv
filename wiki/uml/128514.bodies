@@ -1,0 +1,18 @@
+class Worker
+!!!132226.java!!!	Worker(inout allOrders : OrderList)
+		// PUT THE ITEMS LIST IN ORDER TO UPDATE IT 
+		// WHEN AN ORDER IS PROCESSED IN THE
+		// processOneOrder METHOD ?
+		
+		this.allOrders = allOrders;
+!!!132354.java!!!	run() : void
+		System.out.println("Processing");
+		while (allOrders.hasOrder()) {
+			processOneOrder();
+		}
+!!!132482.java!!!	processOneOrder() : void
+		Order order = allOrders.getNextOrder() ;
+		//process the order here
+		
+		//then print (just for testing at start)
+		System.out.println(order.getId());
