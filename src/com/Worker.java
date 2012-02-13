@@ -20,7 +20,6 @@ public class Worker {
 	
 	public void processOneOrder() {
 		Order order = allOrders.getNextOrder() ;
-
 		System.out.println(order.getId());
 	}
 
