@@ -1,13 +1,13 @@
 package com;
 
+import java.util.HashMap;
+
 public class Worker {
 	private OrderList allOrders;
+	private HashMap<Integer, IItem> allItems;
 	
-	public Worker(OrderList allOrders) {
-		// PUT THE ITEMS LIST IN ORDER TO UPDATE IT 
-		// WHEN AN ORDER IS PROCESSED IN THE
-		// processOneOrder METHOD ?
-		
+	public Worker(OrderList allOrders, HashMap<Integer, IItem> allItems) {
+		this.allItems = allItems;
 		this.allOrders = allOrders;
 	}
 	
@@ -20,9 +20,7 @@ public class Worker {
 	
 	public void processOneOrder() {
 		Order order = allOrders.getNextOrder() ;
-		//process the order here
-		
-		//then print (just for testing at start)
+
 		System.out.println(order.getId());
 	}
 

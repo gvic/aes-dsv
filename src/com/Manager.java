@@ -13,7 +13,7 @@ public class Manager
 	private File itemsFile;
 	private Worker worker;   
     private OrderList allOrders;
-	private HashMap<Integer, IItem> items;
+	private HashMap<Integer, IItem> allItems;
 
    
     public Manager(File fi, File fo)
@@ -21,7 +21,7 @@ public class Manager
     	itemsFile = fi;
 		ordersFile = fo;
     	allOrders = new  OrderList();
-		items = new HashMap<Integer, IItem>();
+		allItems = new HashMap<Integer, IItem>();
     }
     
     //initialises list of orders, processes them
@@ -31,7 +31,7 @@ public class Manager
     }
 
     //alter this method 
-    //initialises list of orders and also loads items
+    //initialises list of orders and also loads allItems
     public void initialise() {
     	try {
     		Scanner scanner = new Scanner (ordersFile);
@@ -49,7 +49,7 @@ public class Manager
             	String inputLine = scanner.nextLine();
             	String[] datas = inputLine.split(";");
             	IItem i = new BookItem(datas);
-            	items.put(i.getId(), i);
+            	allItems.put(i.getId(), i);
         	}
             	
     	}
@@ -61,7 +61,7 @@ public class Manager
     
     //the worker works through the orders
     public void process() {
-    	worker = new Worker (allOrders);
+    	worker = new Worker (allOrders,allItems);
     	worker.run();
     }
     
