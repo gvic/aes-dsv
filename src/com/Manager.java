@@ -38,13 +38,19 @@ public class Manager {
 		DataInputStream in = new DataInputStream(fstream);
 		BufferedReader br = new BufferedReader(new InputStreamReader(in));
 		String strLine = null;
-		while ((strLine = br.readLine()) != null) {
-			String[] datas = strLine.split(";");
-			// probably need to do something with the line here
-			Order order = new Order(datas);
-			// add to list
-			allOrders.addDetails(order);
+		try {
+			while ((strLine = br.readLine()) != null) {
+				String[] datas = strLine.split(";");
+				// probably need to do something with the line here
+				Order order = new Order(datas);
+				// add to list
+				allOrders.addDetails(order);
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			System.exit(0);
 		}
+
 		fstream.close();
 		in.close();
 		br.close();
@@ -52,10 +58,15 @@ public class Manager {
 		fstream = new FileInputStream(itemsFile);
 		in = new DataInputStream(fstream);
 		br = new BufferedReader(new InputStreamReader(in));
-		while ((strLine = br.readLine()) != null) {
-			String[] datas = strLine.split(";");
-			IItem i = new BookItem(datas);
-			allItems.put(i.getId(), i);
+		try {
+			while ((strLine = br.readLine()) != null) {
+				String[] datas = strLine.split(";");
+				IItem i = new BookItem(datas);
+				allItems.put(i.getId(), i);
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			System.exit(0);
 		}
 
 	}
@@ -91,7 +102,8 @@ public class Manager {
 		try {
 			manager.run();
 		} catch (IOException e) {
-			System.out.println("One of the input file has a wrong syntax");
+			System.out
+					.println("An error occured while the program tried to open the files.");
 		}
 	}
 }

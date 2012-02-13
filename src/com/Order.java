@@ -15,7 +15,10 @@ public class Order implements Comparable<Order> {
 	private int itemId;
 	private int quantity;
 
-	public Order(String[] datas) {
+	public Order(String[] datas) throws Exception {
+		if(datas.length != 4){
+			throw new Exception("There is a syntax error in the orders file");
+		}
 		id = datas[0].trim();
 		customerId = datas[1].trim();
 		itemId = Integer.parseInt(datas[2].trim());

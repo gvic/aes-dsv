@@ -6,7 +6,10 @@ public abstract class AItem implements IItem {
 	private double unitPrice;
 	private int quantity;
 	
-	public AItem(String[] datas) {
+	public AItem(String[] datas) throws Exception {
+		if(datas.length != 6){
+			throw new Exception("There is a syntax error in the items file");
+		}
 		id = Integer.parseInt(datas[0]);
 		unitPrice = Double.parseDouble(datas[1]);
 		quantity = Integer.parseInt(datas[2]);

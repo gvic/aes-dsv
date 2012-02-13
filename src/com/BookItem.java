@@ -6,7 +6,7 @@ public class BookItem extends AItem {
 	private String author;
 	private String category;
 	
-	public BookItem(String[] datas) {
+	public BookItem(String[] datas) throws Exception {
 		// The first 3 array cells stands for id, unit price, and quantity 
 		super(datas);
 		title = datas[3];
