@@ -79,17 +79,23 @@ public class Order implements Comparable<Order> {
 		return quantity;
 	}
 
-	public int getDiscountPercent() {
-		String key = customerId.substring(0, 2);
-		int discount = 0;
-		if (key == "STD" && quantity >= 50)
+	public double getDiscountPercent() {
+		String key = this.getCustomerType();
+		double discount = 0;
+		if (key.equals("STD") && quantity >= 50)
 			discount = 10;
-		if (key == "VIP") {
+		if (key.equals("VIP")) {
 			discount = 10;
 			int n = (int) (Math.floor(quantity / 50) - 1);
 			discount += n * 5;
 		}
-		return discount;
+		
+		return discount/100;
+	}
+	
+	
+	public String getCustomerType(){
+		return customerId.substring(0, 3);
 	}
 
 	/**
