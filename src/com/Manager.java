@@ -48,8 +48,9 @@ public class Manager {
 				System.out.println(e.getMessage());
 				addIt = false;
 			}
-			if (addIt)
+			if (addIt){
 				allOrders.addDetails(order);
+			}
 		}
 		allOrders.generateArrayList();
 

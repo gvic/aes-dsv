@@ -28,7 +28,7 @@ public class Order implements Comparable<Order> {
 			throw ee;
 		}
 		customerId = datas[1].trim();
-		if (getCustomerType() != "STD" || getCustomerType() != "VIP") {
+		if (!getCustomerType().equals("STD") && !getCustomerType().equals("VIP")) {
 			throw new Exception("The customer type "+getCustomerType()+" for the order ID " + id
 					+ " is unknown");
 		}
@@ -43,7 +43,7 @@ public class Order implements Comparable<Order> {
 
 		try {
 			itemId = Integer.parseInt(datas[2].trim());
-			if(itemId > 999 || itemId > 300){
+			if(itemId > 999 || itemId < 300){
 				throw new Exception("The order id "+id+" has its item id wrong. It won't be processed");
 			}
 		} catch (NumberFormatException e) {

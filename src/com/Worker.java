@@ -5,15 +5,22 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class Worker {
 	private OrderList allOrders;
 	private HashMap<Integer, IItem> allItems;
 	private BufferedWriter writerOutput;
+	private double totalIncome;
+	private int totalItemSold;
+	private HashSet<String> customerSet;
 
 	public Worker(OrderList allOrders, HashMap<Integer, IItem> allItems) {
 		this.allItems = allItems;
 		this.allOrders = allOrders;
+		this.customerSet = new HashSet<String>();
+		this.totalIncome = 0;
+		this.totalItemSold = 0;
 		try {
 			FileWriter fstream = new FileWriter("output.txt");
 			writerOutput = new BufferedWriter(fstream);
@@ -39,20 +46,19 @@ public class Worker {
 		}
 	}
 
-	private void outputSummary() {
-		
-		
-	}
 
 	public void processOneOrder() throws IOException {
 		Order order = allOrders.getNextOrder();
 		int itemId = order.getItemId();
-		IItem book = allItems.get(itemId);
+		IItem item = allItems.get(itemId);
+		System.out.println(order);
 
-		String output = this.ouputOrder(order, book);
-		if (book.getQuantity() >= order.getQuantity()) {
-			book.setQuantity(book.getQuantity() - order.getQuantity());
+		String output = this.ouputOrder(order, item);
+		if (item.getQuantity() >= order.getQuantity()) {
+			item.setQuantity(item.getQuantity() - order.getQuantity());
+			this.totalItemSold += order.getQuantity(); 
 		}
+		this.customerSet.add(order.getCustomerId());
 
 		this.writerOutput.write(output);
 	}
@@ -62,6 +68,7 @@ public class Worker {
 		double percent = o.getDiscountPercent();
 		double fullPrice = o.getQuantity() * i.getUnitPrice();
 		String cost = df.format(fullPrice - fullPrice * percent);
+		this.totalIncome += Double.parseDouble(cost);
 		String output = "ORDER ID : " + o.getId() + "      ITEM ID : "
 				+ i.getId() + "      QUANTITY ORDERED: " + o.getQuantity()
 				+ "\n";
@@ -81,5 +88,11 @@ public class Worker {
 		return output;
 	}
 	
+	private void outputSummary() throws IOException {
+		writerOutput.write("\n\n\n\nSUMMARY\n\n");
+		writerOutput.write("Total income: "+totalIncome+"\n");
+		writerOutput.write("Total item sold: "+totalItemSold+"\n");
+		writerOutput.write("Total customer: "+customerSet.size()+"\n");		
+	}
 	
 }
