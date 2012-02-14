@@ -3,7 +3,7 @@ package com;
 //outline of order calss
 public class Order implements Comparable<Order> {
 	// will need more instance variables
-	private String id;
+	private Integer id;
 	/**
 	 * Customer ID conventions: KEY-NUM: first third letter have a special
 	 * meaning, and NUM stands numeric values. STD-XXX: standard customer If the
@@ -16,23 +16,60 @@ public class Order implements Comparable<Order> {
 	private int quantity;
 
 	public Order(String[] datas) throws Exception {
-		if(datas.length != 4){
-			throw new Exception("There is a syntax error in the orders file");
+		if (datas.length != 4) {
+			throw new Exception("There is a syntax error in the order file");
 		}
-		id = datas[0].trim();
+
+		try {
+			id = Integer.parseInt(datas[0].trim());
+		} catch (NumberFormatException e) {
+			Exception ee = new Exception(
+					"The order id "+datas[0]+" is wrong. It won't be processed");
+			throw ee;
+		}
 		customerId = datas[1].trim();
-		itemId = Integer.parseInt(datas[2].trim());
-		quantity = Integer.parseInt(datas[3].trim());
+		if (getCustomerType() != "STD" || getCustomerType() != "VIP") {
+			throw new Exception("The customer type "+getCustomerType()+" for the order ID " + id
+					+ " is unknown");
+		}
+		String[] a = customerId.split("-");
+
+		try {
+			Integer.parseInt(a[1]);
+		} catch (NumberFormatException e) {
+			Exception ee = new Exception("A customer id format is wrong. It won't be processed");
+			throw ee;
+		}
+
+		try {
+			itemId = Integer.parseInt(datas[2].trim());
+			if(itemId > 999 || itemId > 300){
+				throw new Exception("The order id "+id+" has its item id wrong. It won't be processed");
+			}
+		} catch (NumberFormatException e) {
+			Exception ee = new Exception("The item id "+datas[2]+" of the order id "+id+" is not integer. It won't be processed");
+			throw ee;
+		}
+		try {
+			quantity = Integer.parseInt(datas[3].trim());
+			if(quantity <= 0){
+				throw new Exception("The item quantity "+datas[3]+" for the order ID "+id+" is not valid. It won't be processed");
+			}
+		} catch (NumberFormatException e) {
+			Exception ee = new Exception("The item quantity "+datas[3]+" for the order id "+id+" is not integer. It won't be processed");
+			throw ee;
+		}
+
 	}
 
 	public Order(String id) {
-		this.id = id.trim();
+		this.id = Integer.parseInt(id.trim());
 	}
 
 	/**
 	 * @return The id.
 	 */
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 
@@ -89,12 +126,11 @@ public class Order implements Comparable<Order> {
 			int n = (int) (Math.floor(quantity / 50) - 1);
 			discount += n * 5;
 		}
-		
-		return discount/100;
+
+		return discount / 100;
 	}
-	
-	
-	public String getCustomerType(){
+
+	public String getCustomerType() {
 		return customerId.substring(0, 3);
 	}
 

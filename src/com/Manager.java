@@ -38,18 +38,20 @@ public class Manager {
 		DataInputStream in = new DataInputStream(fstream);
 		BufferedReader br = new BufferedReader(new InputStreamReader(in));
 		String strLine = null;
-		try {
-			while ((strLine = br.readLine()) != null) {
-				String[] datas = strLine.split(";");
-				// probably need to do something with the line here
-				Order order = new Order(datas);
-				// add to list
-				allOrders.addDetails(order);
+		while ((strLine = br.readLine()) != null) {
+			String[] datas = strLine.split(";");
+			Order order = null;
+			boolean addIt = true;
+			try {
+				order = new Order(datas);
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+				addIt = false;
 			}
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			System.exit(0);
+			if (addIt)
+				allOrders.addDetails(order);
 		}
+		allOrders.generateArrayList();
 
 		fstream.close();
 		in.close();

@@ -1,7 +1,0 @@
-Order ID     Item ID     Cost		Proccess status          Cause
-
-1		402	617		Unproccessed		Stock running low
-2		503	50		Proccessed		- 
-3		402	37.02		Proccessed		- 
-4		401	81.6		Proccessed		- 
-5		401	20.4		Proccessed		- 

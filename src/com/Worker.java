@@ -31,11 +31,17 @@ public class Worker {
 			while (allOrders.hasOrder()) {
 				processOneOrder();
 			}
+			outputSummary();
 			this.writerOutput.close();
 		} catch (IOException e) {
 			System.out.println("Error while handling the output.txt file");
 			e.printStackTrace();
 		}
+	}
+
+	private void outputSummary() {
+		
+		
 	}
 
 	public void processOneOrder() throws IOException {
@@ -74,4 +80,6 @@ public class Worker {
 		output += "---------------------------------------\n\n";
 		return output;
 	}
+	
+	
 }
