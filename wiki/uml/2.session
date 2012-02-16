@@ -1,17 +1,15 @@
 window_sizes 1278 720 264 1008 582 64
 diagrams
-  active  classdiagram_ref 128002 // ClassDiagram
-    1010 587 97 4 0 0
-  classdiagram_ref 128130 // ClassDiagram
-    808 469 100 4 0 0
+  classdiagram_ref 128002 // ClassDiagram
+    1010 587 96 4 0 0
+  active  classdiagram_ref 128130 // ClassDiagram
+    1008 582 100 4 0 0
 end
 show_stereotypes
-selected classdiagram_ref 128002 // ClassDiagram
+selected classdiagram_ref 128130 // ClassDiagram
 open
   classview_ref 128002 // com
   deploymentview_ref 128002 // com
-  
-package_ref 128386 // old
   classview_ref 128386 // tests
 end
 end
