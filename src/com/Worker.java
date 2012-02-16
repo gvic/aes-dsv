@@ -89,8 +89,9 @@ public class Worker {
 	}
 	
 	private void outputSummary() throws IOException {
+		DecimalFormat df = new DecimalFormat("#.###");
 		writerOutput.write("\n\n\n\nSUMMARY\n\n");
-		writerOutput.write("Total income: "+totalIncome+"\n");
+		writerOutput.write("Total income: "+df.format(totalIncome)+"\n");
 		writerOutput.write("Total item sold: "+totalItemSold+"\n");
 		writerOutput.write("Total customer: "+customerSet.size()+"\n");		
 	}

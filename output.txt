@@ -1,14 +1,22 @@
-ORDER ID : 1      ITEM ID : 402      QUANTITY ORDERED: 34
+ORDER ID : 1      ITEM ID : 402      QUANTITY ORDERED: 60
 CUSTOMER TYPE : STD
-ORIGINAL COST : 419.56
-DISCOUNT COST : 419.56
-PROCESS STATUS : Processed 
+ORIGINAL COST : 740.4
+DISCOUNT COST : 666.36
+PROCESS STATUS : Unprocessed 
+CAUSE : Stock running low
 ---------------------------------------
 
 ORDER ID : 2      ITEM ID : 503      QUANTITY ORDERED: 10
 CUSTOMER TYPE : VIP
 ORIGINAL COST : 50
 DISCOUNT COST : 47.5
+PROCESS STATUS : Processed 
+---------------------------------------
+
+ORDER ID : 3      ITEM ID : 402      QUANTITY ORDERED: 3
+CUSTOMER TYPE : STD
+ORIGINAL COST : 37.02
+DISCOUNT COST : 37.02
 PROCESS STATUS : Processed 
 ---------------------------------------
 
@@ -32,6 +40,6 @@ PROCESS STATUS : Processed
 
 SUMMARY
 
-Total income: 1422.8000000000002
-Total item sold: 96
-Total customer: 3
+Total income: 1706.6200000000001
+Total item sold: 65
+Total customer: 4
