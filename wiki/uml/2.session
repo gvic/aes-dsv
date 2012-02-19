@@ -1,15 +1,14 @@
-window_sizes 1278 720 264 1008 582 64
+window_sizes 1278 720 401 871 582 64
 diagrams
-  classdiagram_ref 128002 // ClassDiagram
-    1010 587 96 4 0 0
-  active  classdiagram_ref 128130 // ClassDiagram
+  active  classdiagram_ref 128002 // ClassDiagram
+    1012 587 95 4 3 0
+  classdiagram_ref 128130 // ClassDiagram
     1008 582 100 4 0 0
 end
 show_stereotypes
-selected classdiagram_ref 128130 // ClassDiagram
+selected class_ref 129666 // Order
 open
-  classview_ref 128002 // com
-  deploymentview_ref 128002 // com
+  class_ref 128386 // Manager
   classview_ref 128386 // tests
 end
 end

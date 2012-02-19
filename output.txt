@@ -40,6 +40,6 @@ PROCESS STATUS : Processed
 
 SUMMARY
 
-Total income: 1706.6200000000001
+Total income: 1706.62
 Total item sold: 65
 Total customer: 4
