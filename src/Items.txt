@@ -1,4 +1,4 @@
-401;20.4;200; Test of Title;Test of Author; Test Category 
-402;12.34;46; Snd test title; auth blah; blah blah category
-503;5;34; 3rd test; title auth blah 2 ; cat 3
-200;5;34; 3rd test; title auth blah 2 ; cat 3
+401;20.4;200; Oxford Dictionary;Oxford; Dictionary 
+402;12.34;46; Larousse Dictionary; Larousse; Dictionary
+503;5;34; Internet for All; J Smith ; Textbook
+200;5;34; Conquering the galaxy; D Vader ; Literature
