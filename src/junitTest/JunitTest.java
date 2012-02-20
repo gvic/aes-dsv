@@ -1,6 +1,14 @@
 package junitTest;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.reflect.Array;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
 
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -12,8 +20,11 @@ public class JunitTest  extends TestCase{
 	private static String sTest = "1; VIP-007;503;2";
 	private static String[] dTest1 = sTest.split(";");
 	private static String [] dTest2 = "5; VIP-002;401;150".split(";");
-	private static final String itemPath = "";
-	private static final String orderPath = "";
+	private static final String itemPath = "C:/Users/hykth/workspace_galileo/advsoftF/src/Items.txt";
+	private static final String orderPath = "C:/Users/hykth/workspace_galileo/advsoftF/src/Orders.txt";
+	private static final String outputPath = "C:/Users/hykth/workspace_galileo/advsoftF/output.txt";
+	private File fItem = new File(itemPath);
+	private File fOrder = new File (orderPath);
 	public JunitTest (String name) 
 	{
 		super (name);
@@ -22,8 +33,6 @@ public class JunitTest  extends TestCase{
 	public static void main(String[] args) 
 	{
 		TestRunner.runAndWait(new TestSuite(JunitTest.class));
-
-
 	}
 
 	/* JUnit Test for Discount Calculation
@@ -63,4 +72,33 @@ public class JunitTest  extends TestCase{
 		Order oTest = new Order(dTest1);
 	    assertEquals("2", Array.get(oTest.parseInfo(dTest1), 3));
 	}
+	/* JUnit Test to know if the output exists and
+	 * if the content is empty
+	 * -> Delete the existing output file
+	 * -> Run the application
+	 * -> Test the new file */		
+	public void testOutputExists() throws IOException{
+		File fToDelete = new File (outputPath);
+		fToDelete.delete();
+		Manager m = new Manager(fItem, fOrder);
+		m.run();
+		assertTrue(readFile(outputPath));
+	}
+	//Aux Function for reading in a file
+	private static Boolean readFile(String path) throws IOException{
+		  FileInputStream stream = new FileInputStream(new File(path));
+		  try {
+		    FileChannel fc = stream.getChannel();
+		    MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
+		    if (Charset.defaultCharset().decode(bb).toString().equals(""))
+		    	return false;
+		    else
+		    	return true;
+		  }
+		  finally {
+		    stream.close();
+		  }
+		}
+
+
 }
