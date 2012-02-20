@@ -91,6 +91,8 @@ public class Manager {
 
 		File fi = new File(args[0]);
 		File fo = new File(args[1]);
+		
+
 
 		if (!fi.exists()) {
 			System.out.println(fi.toString() + " does not exist");
