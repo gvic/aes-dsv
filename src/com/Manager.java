@@ -104,6 +104,7 @@ public class Manager {
 		} catch (IOException e) {
 			System.out
 					.println("An error occured while the program tried to read the files.");
+			System.exit(0);
 		}
 	}
 }
