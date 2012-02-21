@@ -41,15 +41,11 @@ public class Manager {
 		while ((strLine = br.readLine()) != null) {
 			String[] datas = strLine.split(";");
 			Order order = null;
-			boolean addIt = true;
 			try {
 				order = new Order(datas);
+				allOrders.addDetails(order);
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
-				addIt = false;
-			}
-			if (addIt){
-				allOrders.addDetails(order);
 			}
 		}
 		allOrders.generateArrayList();
