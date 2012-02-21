@@ -58,7 +58,7 @@ public class Order implements Comparable<Order> {
 		try {
 			tempRes  = Integer.parseInt(datas[2].trim());
 			dataRet[2] = datas[2].trim();
-			if(tempRes > 999 || tempRes < 300){
+			if(tempRes > 999 || tempRes < 100){
 				throw new Exception("The order id "+dataRet[0].toString()+" has its item id wrong. It won't be processed");
 			}
 		} catch (NumberFormatException e) {
