@@ -7,7 +7,7 @@ public abstract class AItem implements IItem {
 	private int quantity;
 	
 	public AItem(String[] datas) throws Exception {
-		if(datas.length != 6){
+		if(datas.length < 3){
 			throw new Exception("There is a syntax error in the items file");
 		}
 		id = Integer.parseInt(datas[0]);

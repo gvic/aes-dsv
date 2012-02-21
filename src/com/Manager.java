@@ -65,7 +65,6 @@ public class Manager {
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
-			System.exit(0);
 		}
 
 	}
@@ -104,7 +103,7 @@ public class Manager {
 			manager.run();
 		} catch (IOException e) {
 			System.out
-					.println("An error occured while the program tried to open the files.");
+					.println("An error occured while the program tried to read the files.");
 		}
 	}
 }
