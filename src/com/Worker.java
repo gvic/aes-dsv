@@ -28,6 +28,7 @@ public class Worker {
 			System.out
 					.println("Error while trying to open the output.txt file.");
 			e.printStackTrace();
+			System.exit(0);
 		}
 	}
 
@@ -56,6 +57,7 @@ public class Worker {
 		String output = this.ouputOrder(order, item);
 		if (item.getQuantity() >= order.getQuantity()) {
 			item.setQuantity(item.getQuantity() - order.getQuantity());
+			allItems.put(itemId,item);
 			this.totalItemSold += order.getQuantity(); 
 		}
 		this.customerSet.add(order.getCustomerId());
