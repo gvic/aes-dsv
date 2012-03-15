@@ -17,10 +17,10 @@ public class Controller implements IListener {
 	
 	
 	/**
-	 * @see com.IListener#UpdateFields()
+	 * @see com.IListener#updateFields()
 	 */
 	@Override
-	public void UpdateFields() {
+	public void updateFields() {
 		// TODO Auto-generated method stub
 
 	}
@@ -51,6 +51,11 @@ public class Controller implements IListener {
 			HashMap<Integer, IItem> allItems) {
 		this.gui.initialiseOrdersBox(allOrders);
 		this.gui.initialiseItemsBox(allItems);
+	}
+
+	@Override
+	public void updateWorkerBox(String digest) {
+		this.gui.updateWorkerBox(digest);
 	}
 
 }

@@ -39,6 +39,8 @@ public class OrderList {
 
 	public Order getNextOrder() {
 		Order order = orderListArr.remove(0);
+		while(order.isProcessed())
+			order = orderListArr.remove(0);
 		return order;
 
 	}
@@ -48,10 +50,14 @@ public class OrderList {
 	 */
 	public String listDetails() {
 		StringBuffer allEntries = new StringBuffer();
+		allEntries.append("<html>");
 		for (Order details : orderListArr) {
-			allEntries.append(details.getId());
-			allEntries.append('\n');
+			allEntries.append(details.getId()+ " - ");
+			allEntries.append(details.getCustomerType() + " - ");
+			allEntries.append(details.getQuantity());
+			allEntries.append("<br>");
 		}
+		allEntries.append("</html>");
 		return allEntries.toString();
 	}
 

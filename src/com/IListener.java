@@ -15,7 +15,7 @@ public interface IListener {
 	 * Method called from within the model to notify the controller
 	 * (Controller) to update the view (View.cs) when 
 	 */
-	void UpdateFields();
+	void updateFields();
 
 	void setView(View window);
 
@@ -26,5 +26,7 @@ public interface IListener {
 	void pauseModel();
 
 	void initialiseFields(OrderList allOrders, HashMap<Integer, IItem> allItems);
+
+	void updateWorkerBox(String digest);
 
 }

@@ -9,9 +9,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Scanner;
 
-public class Manager implements IModel{
+public class Manager implements IModel {
 
 	private File ordersFile;
 	private File itemsFile;
@@ -19,6 +20,8 @@ public class Manager implements IModel{
 	private OrderList allOrders;
 	private HashMap<Integer, IItem> allItems;
 	private IListener controller;
+	private HashSet<Worker> workers;
+	private int maximumWorkers;
 
 	public Manager(File fi, File fo) {
 		itemsFile = fi;
@@ -26,17 +29,14 @@ public class Manager implements IModel{
 		allOrders = new OrderList();
 		allItems = new HashMap<Integer, IItem>();
 		controller = new Controller();
+		maximumWorkers = 3;
+		this.workers = new HashSet<Worker>();
+		// By default only one worker
+		workers.add(new Worker(allOrders, allItems));
+		workers.add(new Worker(allOrders, allItems));
 	}
 
-	// initialises list of orders, processes them
-	public void run() throws IOException {
-		this.initialise();
-		this.process();
-	}
-
-	// alter this method
-	// initialises list of orders and also loads allItems
-	public void initialise() throws IOException {
+	public void loadOrders() throws IOException {
 		FileInputStream fstream = new FileInputStream(ordersFile);
 		DataInputStream in = new DataInputStream(fstream);
 		BufferedReader br = new BufferedReader(new InputStreamReader(in));
@@ -56,6 +56,13 @@ public class Manager implements IModel{
 		fstream.close();
 		in.close();
 		br.close();
+	}
+
+	public void loadItems() throws IOException {
+		FileInputStream fstream = new FileInputStream(ordersFile);
+		DataInputStream in = new DataInputStream(fstream);
+		BufferedReader br = new BufferedReader(new InputStreamReader(in));
+		String strLine = null;
 		strLine = null;
 		fstream = new FileInputStream(itemsFile);
 		in = new DataInputStream(fstream);
@@ -69,52 +76,39 @@ public class Manager implements IModel{
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-		
-		controller.initialiseFields(allOrders,allItems);
 
 	}
+
+	// initialises list of orders, processes them
+	public void run() throws IOException {
+		this.process();
+	}
+
+	// alter this method
+	// initialises list of orders and also loads allItems
+	public void initialise() throws IOException {
+		this.loadItems();
+		this.loadOrders();
+		controller.initialiseFields(allOrders, allItems);
+
+	}
+	
 
 	// the worker works through the orders
 	public void process() {
-		worker = new Worker(allOrders, allItems);
-		worker.run();
-	}
-
-	// start the program
-	public static void main(String args[]) {
-		if (args.length != 2) {
-			System.out.println("USAGE");
-			System.out
-					.println("java com.Manager <items_file_name> <orders_file_name>");
-			System.exit(0);
-		}
-
-		File fi = new File(args[0]);
-		File fo = new File(args[1]);
-		
-
-
-		if (!fi.exists()) {
-			System.out.println(fi.toString() + " does not exist");
-			System.exit(0);
-		}
-		if (!fo.exists()) {
-			System.out.println(fi.toString() + " does not exist");
-			System.exit(0);
-		}
-
-		Manager manager = new Manager(fi, fo);
-		try {
-			manager.run();
-		} catch (IOException e) {
-			System.out
-					.println("An error occured while the program tried to read the files.");
-			System.exit(0);
+		Iterator<Worker> it = workers.iterator();
+		while (it.hasNext()) {
+			Worker w = it.next();
+			w.run();		
 		}
 	}
 
 	@Override
 	public void setController(IListener controller) {
-        this.controller = controller;
-    }
+		this.controller = controller;
+		Iterator<Worker> it = workers.iterator();
+		while (it.hasNext())
+			it.next().setController(controller);
+
+	}
 }
