@@ -33,6 +33,7 @@ public class View {
 	private JLabel lblWarehouse;
 	private JLabel lblOrderbox;
 	private JLabel lblWarehousebox;
+	private JLabel lblOneworker;
 
 	/**
 	 * Launch the application.
@@ -48,8 +49,6 @@ public class View {
 		File fi = new File(args[0]);
 		File fo = new File(args[1]);
 		
-
-
 		if (!fi.exists()) {
 			System.out.println(fi.toString() + " does not exist");
 			System.exit(0);
@@ -59,15 +58,7 @@ public class View {
 			System.exit(0);
 		}
 
-		IModel manager = new Manager(fi, fo);
-//		try {
-//			manager.run();
-//		} catch (IOException e) {
-//			System.out
-//					.println("An error occured while the program tried to read the files.");
-//			System.exit(0);
-//		}
-		
+		final IModel manager = new Manager(fi, fo);		
 		final IListener controller = new Controller();
 		manager.setController(controller);
 		controller.setModel(manager);
@@ -79,11 +70,13 @@ public class View {
 					controller.setView(window);
 					window.setController(controller);
 					window.frame.setVisible(true);
+					manager.initialise();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
+		
 	}
 
 	/**
@@ -118,7 +111,7 @@ public class View {
 		lblWarehouse = new JLabel("Warehouse");
 		lblWarehouse.setVerticalAlignment(SwingConstants.TOP);
 		
-		JLabel lblOneworker = new JLabel("oneWorker");
+		lblOneworker = new JLabel("oneWorker");
 		lblOneworker.setVerticalAlignment(SwingConstants.TOP);
 		
 		lblOrderbox = new JLabel("orderBox");
@@ -135,17 +128,19 @@ public class View {
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addComponent(lblOrderbox, GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
 						.addComponent(lblOrders, GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE))
-					.addGap(18)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblOneworker, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblWorker, GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE))
-					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(18)
+							.addComponent(lblWorker, GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(lblOneworker, GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)))
+					.addGap(18)
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(lblWarehouse, GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
 							.addGap(24))
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(18)
 							.addComponent(lblWarehousebox, GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)
 							.addContainerGap())))
 		);
@@ -160,11 +155,9 @@ public class View {
 						.addComponent(lblWarehouse))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(162)
-							.addComponent(lblOneworker))
 						.addComponent(lblOrderbox, GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
-						.addComponent(lblWarehousebox, GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE))
+						.addComponent(lblWarehousebox, GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+						.addComponent(lblOneworker, GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE))
 					.addGap(12))
 		);
 		
@@ -208,8 +201,12 @@ public class View {
 	}
 
 	public void initialiseItemsBox(HashMap<Integer, IItem> allItems) {
-		// TODO Auto-generated method stub
-		
+		//lblWarehousebox.setText(allItems.toString());		
+	}
+
+	public void updateWorkerBox(String digest) {
+		lblOneworker.setText(digest);
+		lblOneworker.paintImmediately(lblOneworker.getVisibleRect());
 	}
 }
 

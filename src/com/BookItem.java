@@ -26,4 +26,8 @@ public class BookItem extends AItem {
 	public String getCategory() {
 		return category;
 	}
+	
+	public String toString(){
+		return title + " by " + author;
+	}
 }

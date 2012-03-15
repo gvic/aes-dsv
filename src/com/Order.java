@@ -14,8 +14,10 @@ public class Order implements Comparable<Order> {
 	private String customerId;
 	private int itemId;
 	private int quantity;
+	private boolean processed;
 
 	public Order(String[] datas) throws Exception {
+		processed = false;
 		if (datas.length != 4) {
 			throw new Exception("There is a syntax error in the order file");
 		}
@@ -30,52 +32,63 @@ public class Order implements Comparable<Order> {
 	public Order(String id) {
 		this.id = Integer.parseInt(id.trim());
 	}
-	
-	public String[] parseInfo(String[] datas) throws Exception{
+
+	public String[] parseInfo(String[] datas) throws Exception {
 		String[] dataRet = new String[4];
 		int tempRes;
 		try {
 			tempRes = Integer.parseInt(datas[0].trim());
 			dataRet[0] = datas[0].trim();
 		} catch (NumberFormatException e) {
-			Exception ee = new Exception(
-					"The order id "+datas[0]+" is wrong. It won't be processed");
+			Exception ee = new Exception("The order id " + datas[0]
+					+ " is wrong. It won't be processed");
 			throw ee;
 		}
 		dataRet[1] = datas[1].trim();
-		if (!getCustomerTypewithArg(dataRet[1].toString()).equals("STD") && !getCustomerTypewithArg(dataRet[1].toString()).equals("VIP")) {
-			throw new Exception("The customer type "+getCustomerTypewithArg(dataRet[1].toString())+" for the order ID " + dataRet[0].toString()
+		if (!getCustomerTypewithArg(dataRet[1].toString()).equals("STD")
+				&& !getCustomerTypewithArg(dataRet[1].toString()).equals("VIP")) {
+			throw new Exception("The customer type "
+					+ getCustomerTypewithArg(dataRet[1].toString())
+					+ " for the order ID " + dataRet[0].toString()
 					+ " is unknown");
 		}
 		String[] a = dataRet[1].toString().split("-");
 		try {
 			Integer.parseInt(a[1]);
 		} catch (NumberFormatException e) {
-			Exception ee = new Exception("A customer id format is wrong. It won't be processed");
+			Exception ee = new Exception(
+					"A customer id format is wrong. It won't be processed");
 			throw ee;
 		}
 
 		try {
-			tempRes  = Integer.parseInt(datas[2].trim());
+			tempRes = Integer.parseInt(datas[2].trim());
 			dataRet[2] = datas[2].trim();
-			if(tempRes > 999 || tempRes < 100){
-				throw new Exception("The order id "+dataRet[0].toString()+" has its item id wrong. It won't be processed");
+			if (tempRes > 999 || tempRes < 100) {
+				throw new Exception("The order id " + dataRet[0].toString()
+						+ " has its item id wrong. It won't be processed");
 			}
 		} catch (NumberFormatException e) {
-			Exception ee = new Exception("The item id "+datas[2]+" of the order id "+dataRet[0].toString()+" is not integer. It won't be processed");
+			Exception ee = new Exception("The item id " + datas[2]
+					+ " of the order id " + dataRet[0].toString()
+					+ " is not integer. It won't be processed");
 			throw ee;
 		}
 		try {
 			tempRes = Integer.parseInt(datas[3].trim());
 			dataRet[3] = datas[3].trim();
-			if(tempRes <= 0){
-				throw new Exception("The item quantity "+datas[3]+" for the order ID "+dataRet[0].toString()+" is not valid. It won't be processed");
+			if (tempRes <= 0) {
+				throw new Exception("The item quantity " + datas[3]
+						+ " for the order ID " + dataRet[0].toString()
+						+ " is not valid. It won't be processed");
 			}
 		} catch (NumberFormatException e) {
-			Exception ee = new Exception("The item quantity "+datas[3]+" for the order id "+dataRet[0].toString()+" is not integer. It won't be processed");
+			Exception ee = new Exception("The item quantity " + datas[3]
+					+ " for the order id " + dataRet[0].toString()
+					+ " is not integer. It won't be processed");
 			throw ee;
 		}
-		
+
 		return dataRet;
 	}
 
@@ -146,7 +159,7 @@ public class Order implements Comparable<Order> {
 	public String getCustomerType() {
 		return customerId.substring(0, 3);
 	}
-	
+
 	public String getCustomerTypewithArg(String s) {
 		return s.substring(0, 3);
 	}
@@ -160,6 +173,14 @@ public class Order implements Comparable<Order> {
 		ret += "Item ID...... " + itemId + "\n";
 		ret += "Quantity..... " + quantity + "\n";
 		return ret;
+	}
+
+	public boolean isProcessed() {
+		return processed;
+	}
+
+	public void setProcessed(boolean processed) {
+		this.processed = processed;
 	}
 
 }
