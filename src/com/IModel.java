@@ -1,5 +1,7 @@
 package com;
 
+import java.io.IOException;
+
 /**
  * MVC's Model interface
  * 
@@ -13,4 +15,6 @@ public interface IModel {
 	 * to listen to the model
 	 */
 	void AddListener(IListener controller);
+	
+	void run() throws IOException;
 }

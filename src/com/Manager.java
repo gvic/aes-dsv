@@ -25,6 +25,7 @@ public class Manager implements IModel{
 		ordersFile = fo;
 		allOrders = new OrderList();
 		allItems = new HashMap<Integer, IItem>();
+		listeners = new HashSet<IListener>();
 	}
 
 	// initialises list of orders, processes them

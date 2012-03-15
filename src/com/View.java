@@ -1,6 +1,8 @@
 package com;
 
 import java.awt.EventQueue;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
@@ -11,19 +13,58 @@ import javax.swing.JToolBar;
 import javax.swing.JButton;
 import javax.swing.JTextPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class View {
 
 	private JFrame frame;
+	private IListener controller;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		if (args.length != 2) {
+			System.out.println("USAGE");
+			System.out
+					.println("java com.Manager <items_file_name> <orders_file_name>");
+			System.exit(0);
+		}
+
+		File fi = new File(args[0]);
+		File fo = new File(args[1]);
+		
+
+
+		if (!fi.exists()) {
+			System.out.println(fi.toString() + " does not exist");
+			System.exit(0);
+		}
+		if (!fo.exists()) {
+			System.out.println(fi.toString() + " does not exist");
+			System.exit(0);
+		}
+
+		IModel manager = new Manager(fi, fo);
+//		try {
+//			manager.run();
+//		} catch (IOException e) {
+//			System.out
+//					.println("An error occured while the program tried to read the files.");
+//			System.exit(0);
+//		}
+		
+		final IListener controller = new Controller();
+		manager.AddListener(controller);
+		controller.setModel(manager);
+		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					View window = new View();
+					controller.setView(window);
+					window.setController(controller);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -91,10 +132,25 @@ public class View {
 		);
 		
 		JButton btnRun = new JButton("Run");
+		btnRun.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				try {
+					controller.runModel();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
 		toolBar.add(btnRun);
 		
 		JButton btnPause = new JButton("Pause");
 		toolBar.add(btnPause);
 		frame.getContentPane().setLayout(groupLayout);
 	}
+
+	public void setController(IListener controller2) {
+		this.controller = controller2;
+	}
 }
+
