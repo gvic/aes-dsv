@@ -8,15 +8,17 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Scanner;
 
-public class Manager {
+public class Manager implements IModel{
 
 	private File ordersFile;
 	private File itemsFile;
 	private Worker worker;
 	private OrderList allOrders;
 	private HashMap<Integer, IItem> allItems;
+	private HashSet<IListener> listeners;
 
 	public Manager(File fi, File fo) {
 		itemsFile = fi;
@@ -107,4 +109,9 @@ public class Manager {
 			System.exit(0);
 		}
 	}
+
+	@Override
+	public void AddListener(IListener controller) {
+        this.listeners.add(controller);
+    }
 }

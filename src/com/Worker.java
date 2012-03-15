@@ -7,7 +7,7 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.HashSet;
 
-public class Worker {
+public class Worker implements Runnable{
 	private OrderList allOrders;
 	private HashMap<Integer, IItem> allItems;
 	private BufferedWriter writerOutput;
