@@ -89,7 +89,9 @@ public class JunitTest extends TestCase {
 	 */
 	public void testOutputExists() throws IOException {
 		File fToDelete = new File(outputPath);
-		fToDelete.delete();
+		if (fToDelete.exists()) {
+			fToDelete.delete();
+		}
 		Manager m = new Manager(fItem, fOrder);
 		m.run();
 		assertTrue("Output file found", readFile(outputPath));
@@ -106,7 +108,7 @@ public class JunitTest extends TestCase {
 					fc.size());
 			if (Charset.defaultCharset().decode(bb).toString().equals(""))
 				ret = false;
-			
+
 			stream.close();
 		} catch (IOException e) {
 
