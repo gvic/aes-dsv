@@ -14,7 +14,7 @@ public interface IModel {
 	 * @param IListener: The controller which wants 
 	 * to listen to the model
 	 */
-	void AddListener(IListener controller);
+	void setController(IListener controller);
 	
 	void run() throws IOException;
 }

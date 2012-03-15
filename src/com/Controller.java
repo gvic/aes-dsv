@@ -4,6 +4,7 @@
 package com;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 /**
  * @author victorinox
@@ -37,6 +38,19 @@ public class Controller implements IListener {
 	@Override
 	public void runModel() throws IOException {
 		this.model.run();
+	}
+
+	@Override
+	public void pauseModel() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void initialiseFields(OrderList allOrders,
+			HashMap<Integer, IItem> allItems) {
+		this.gui.initialiseOrdersBox(allOrders);
+		this.gui.initialiseItemsBox(allItems);
 	}
 
 }

@@ -18,14 +18,14 @@ public class Manager implements IModel{
 	private Worker worker;
 	private OrderList allOrders;
 	private HashMap<Integer, IItem> allItems;
-	private HashSet<IListener> listeners;
+	private IListener controller;
 
 	public Manager(File fi, File fo) {
 		itemsFile = fi;
 		ordersFile = fo;
 		allOrders = new OrderList();
 		allItems = new HashMap<Integer, IItem>();
-		listeners = new HashSet<IListener>();
+		controller = new Controller();
 	}
 
 	// initialises list of orders, processes them
@@ -69,6 +69,8 @@ public class Manager implements IModel{
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
+		
+		controller.initialiseFields(allOrders,allItems);
 
 	}
 
@@ -112,7 +114,7 @@ public class Manager implements IModel{
 	}
 
 	@Override
-	public void AddListener(IListener controller) {
-        this.listeners.add(controller);
+	public void setController(IListener controller) {
+        this.controller = controller;
     }
 }

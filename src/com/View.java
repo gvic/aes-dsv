@@ -3,6 +3,7 @@ package com;
 import java.awt.EventQueue;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
@@ -13,13 +14,25 @@ import javax.swing.JToolBar;
 import javax.swing.JButton;
 import javax.swing.JTextPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.StyledDocument;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JLabel;
+import java.awt.Color;
+import javax.swing.SwingConstants;
 
 public class View {
 
 	private JFrame frame;
 	private IListener controller;
+	private JLabel lblOrders;
+	private JLabel lblWorker;
+	private JLabel lblWarehouse;
+	private JLabel lblOrderbox;
+	private JLabel lblWarehousebox;
 
 	/**
 	 * Launch the application.
@@ -56,7 +69,7 @@ public class View {
 //		}
 		
 		final IListener controller = new Controller();
-		manager.AddListener(controller);
+		manager.setController(controller);
 		controller.setModel(manager);
 		
 		EventQueue.invokeLater(new Runnable() {
@@ -96,39 +109,63 @@ public class View {
 		
 		JToolBar toolBar = new JToolBar();
 		
-		JTextPane txtpnOrderList = new JTextPane();
-		txtpnOrderList.setText("Order List");
+		lblOrders = new JLabel("Orders");
+		lblOrders.setVerticalAlignment(SwingConstants.TOP);
 		
-		JTextPane txtpnWorker = new JTextPane();
-		txtpnWorker.setText("Worker 1");
+		lblWorker = new JLabel("Worker");
+		lblWorker.setVerticalAlignment(SwingConstants.TOP);
 		
-		JTextPane txtpnWarehouse = new JTextPane();
-		txtpnWarehouse.setText("Warehouse");
+		lblWarehouse = new JLabel("Warehouse");
+		lblWarehouse.setVerticalAlignment(SwingConstants.TOP);
+		
+		JLabel lblOneworker = new JLabel("oneWorker");
+		lblOneworker.setVerticalAlignment(SwingConstants.TOP);
+		
+		lblOrderbox = new JLabel("orderBox");
+		lblOrderbox.setVerticalAlignment(SwingConstants.TOP);
+		
+		lblWarehousebox = new JLabel("warehouseBox");
+		lblWarehousebox.setVerticalAlignment(SwingConstants.TOP);
 		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
 		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
+			groupLayout.createParallelGroup(Alignment.TRAILING)
+				.addComponent(toolBar, GroupLayout.DEFAULT_SIZE, 448, Short.MAX_VALUE)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(12)
-					.addComponent(txtpnOrderList, GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE)
+					.addContainerGap()
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblOrderbox, GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
+						.addComponent(lblOrders, GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE))
 					.addGap(18)
-					.addComponent(txtpnWorker, GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
-					.addGap(18)
-					.addComponent(txtpnWarehouse, GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
-					.addContainerGap())
-				.addComponent(toolBar, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 448, Short.MAX_VALUE)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblOneworker, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblWorker, GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE))
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(18)
+							.addComponent(lblWarehouse, GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
+							.addGap(24))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(18)
+							.addComponent(lblWarehousebox, GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)
+							.addContainerGap())))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addComponent(toolBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(txtpnOrderList, GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblOrders)
+						.addComponent(lblWorker)
+						.addComponent(lblWarehouse))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(txtpnWorker)
-							.addGap(177))
-						.addComponent(txtpnWarehouse, GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE))
-					.addContainerGap())
+							.addGap(162)
+							.addComponent(lblOneworker))
+						.addComponent(lblOrderbox, GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+						.addComponent(lblWarehousebox, GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE))
+					.addGap(12))
 		);
 		
 		JButton btnRun = new JButton("Run");
@@ -145,12 +182,34 @@ public class View {
 		toolBar.add(btnRun);
 		
 		JButton btnPause = new JButton("Pause");
+		btnPause.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				controller.pauseModel();
+			}
+		});
 		toolBar.add(btnPause);
 		frame.getContentPane().setLayout(groupLayout);
 	}
 
 	public void setController(IListener controller2) {
 		this.controller = controller2;
+	}
+
+	public void initialiseOrdersBox(OrderList allOrders) {
+		lblOrderbox.setText(allOrders.listDetails());
+//		//StyledDocument doc = txtpnOrderList.getStyledDocument();
+//		try {
+//			doc.insertString(doc.getLength(), allOrders.listDetails(), null);
+//		} catch (BadLocationException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+	}
+
+	public void initialiseItemsBox(HashMap<Integer, IItem> allItems) {
+		// TODO Auto-generated method stub
+		
 	}
 }
 

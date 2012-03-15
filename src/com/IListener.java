@@ -1,6 +1,7 @@
 package com;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 /**
  * This interface declares the methods needed by 
@@ -21,5 +22,9 @@ public interface IListener {
 	void setModel(IModel manager);
 	
 	void runModel() throws IOException;
+
+	void pauseModel();
+
+	void initialiseFields(OrderList allOrders, HashMap<Integer, IItem> allItems);
 
 }
