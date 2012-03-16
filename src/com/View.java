@@ -1,27 +1,21 @@
 package com;
 
 import java.awt.EventQueue;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
-import javax.swing.JFrame;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.JToolBar;
 import javax.swing.JButton;
-import javax.swing.JTextPane;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Document;
-import javax.swing.text.StyledDocument;
-
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
-import java.awt.Color;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JToolBar;
+import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 
 public class View {
@@ -33,7 +27,7 @@ public class View {
 	private JLabel lblWarehouse;
 	private JLabel lblOrderbox;
 	private JLabel lblWarehousebox;
-	private JLabel lblOneworker;
+	private HashMap<Integer,JLabel> lblWorkers;
 
 	/**
 	 * Launch the application.
@@ -66,7 +60,8 @@ public class View {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					View window = new View();
+					int maxWorker = manager.getMaximumWorkers();
+					View window = new View(maxWorker);
 					controller.setView(window);
 					window.setController(controller);
 					window.frame.setVisible(true);
@@ -82,14 +77,15 @@ public class View {
 	/**
 	 * Create the application.
 	 */
-	public View() {
-		initialize();
+	public View(int maxWorker) {
+		initialize(maxWorker);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
+	 * @param maxWorker 
 	 */
-	private void initialize() {
+	private void initialize(int maxWorker) {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -111,8 +107,12 @@ public class View {
 		lblWarehouse = new JLabel("Warehouse");
 		lblWarehouse.setVerticalAlignment(SwingConstants.TOP);
 		
-		lblOneworker = new JLabel("oneWorker");
-		lblOneworker.setVerticalAlignment(SwingConstants.TOP);
+		lblWorkers = new HashMap<Integer, JLabel>();	
+		for (int i = 0; i < maxWorker; i++) {
+			JLabel lbl = new JLabel("Worker "+i);
+			lbl.setVerticalAlignment(SwingConstants.TOP);
+			lblWorkers.put(i,lbl );			
+		}
 		
 		lblOrderbox = new JLabel("orderBox");
 		lblOrderbox.setVerticalAlignment(SwingConstants.TOP);
@@ -120,6 +120,7 @@ public class View {
 		lblWarehousebox = new JLabel("warehouseBox");
 		lblWarehousebox.setVerticalAlignment(SwingConstants.TOP);
 		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
+
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.TRAILING)
 				.addComponent(toolBar, GroupLayout.DEFAULT_SIZE, 448, Short.MAX_VALUE)
@@ -134,7 +135,10 @@ public class View {
 							.addComponent(lblWorker, GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(lblOneworker, GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)))
+							.addComponent(lblWorkers.get(0), GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(lblWorkers.get(1), GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)))
 					.addGap(18)
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 						.addGroup(groupLayout.createSequentialGroup()
@@ -142,8 +146,7 @@ public class View {
 							.addGap(24))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(lblWarehousebox, GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)
-							.addContainerGap())))
-		);
+							.addContainerGap()))));
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
@@ -157,9 +160,16 @@ public class View {
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblOrderbox, GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
 						.addComponent(lblWarehousebox, GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
-						.addComponent(lblOneworker, GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE))
-					.addGap(12))
-		);
+						.addComponent(lblWorkers.get(0), GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE))
+						.addComponent(lblWorkers.get(1), GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)));
+//					.addGap(12)
+//					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+//						.addComponent(lblWorkers.get(1), GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE))
+//					.addGap(12)
+//					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+//							.addComponent(lblWorkers.get(2), GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE))
+//					.addGap(12))
+//		);
 		
 		JButton btnRun = new JButton("Run");
 		btnRun.addMouseListener(new MouseAdapter() {
@@ -204,9 +214,18 @@ public class View {
 		//lblWarehousebox.setText(allItems.toString());		
 	}
 
-	public void updateWorkerBox(String digest) {
-		lblOneworker.setText(digest);
-		lblOneworker.paintImmediately(lblOneworker.getVisibleRect());
+	public void updateWorkerBox(Integer idWorker, String digest) {
+		lblWorkers.get(idWorker).setText(digest);
+		lblWorkers.get(idWorker).paintImmediately(lblWorkers.get(idWorker).getVisibleRect());
+	}
+
+	public void updateOrdersBox(OrderList allOrders) {
+		lblOrderbox.setText(allOrders.listDetails());
+		lblOrderbox.paintImmediately(lblOrderbox.getVisibleRect());		
+	}
+
+	public void updateWareHouseBox(HashMap<Integer, IItem> allItems) {
+		
 	}
 }
 
