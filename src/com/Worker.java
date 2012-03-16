@@ -17,6 +17,8 @@ public class Worker implements Runnable {
 	private IListener controller;
 	private static int workerIdCount;
 	private Integer id;
+	private final Object lock = new Object();
+	private volatile boolean suspend = false, stopped = false;
 
 	public Worker(OrderList allOrders, HashMap<Integer, IItem> allItems) {
 		this.allItems = allItems;
@@ -45,22 +47,51 @@ public class Worker implements Runnable {
 	}
 
 	public void run() {
-		try {
-			while (allOrders.hasOrder()) {
-				processOneOrder();
-			}
-			outputSummary();
-			this.writerOutput.close();
+		while (!stopped) {
+			while (!suspend && allOrders.hasOrder()) {
+				try {
 
-		} catch (IOException e) {
-			System.out.println("Error while handling the output.txt file");
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+					processOneOrder();
+					double r = Math.random() + 1;
+					int time = (int) (1000 * r);
+					Thread.sleep(time);
+
+					outputSummary();
+					this.writerOutput.close();
+					synchronized (lock) {
+						lock.wait();
+					}
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InterruptedException e) {
+					Thread.currentThread().interrupt();
+					return;
+				}
+			}
 		}
 	}
 
-	public void processOneOrder() throws IOException, InterruptedException {
+	public void suspend() {
+		suspend = true;
+	}
+
+	public void stop() {
+		suspend = true;
+		stopped = true;
+		synchronized (lock) {
+			lock.notifyAll();
+		}
+	}
+
+	public void resume() {
+		suspend = false;
+		synchronized (lock) {
+			lock.notifyAll();
+		}
+	}
+
+	public void processOneOrder() throws IOException {
 		Order order = allOrders.getNextOrder();
 		if (!order.isProcessed()) {
 			int itemId = order.getItemId();
@@ -77,9 +108,6 @@ public class Worker implements Runnable {
 			this.controller.updateWorkerBox(id, digest(order, item));
 			this.controller.updateOrderBox(allOrders);
 			this.controller.updateWareHouseBox(allItems);
-			double r = Math.random() + 1;
-			int time = (int) (1000 * r);
-			Thread.sleep(time);
 			this.writerOutput.write(output);
 		}
 	}
