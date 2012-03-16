@@ -54,8 +54,18 @@ public class Controller implements IListener {
 	}
 
 	@Override
-	public void updateWorkerBox(String digest) {
-		this.gui.updateWorkerBox(digest);
+	public void updateWorkerBox(Integer idWorker, String digest) {
+		this.gui.updateWorkerBox(idWorker, digest);
+	}
+
+	@Override
+	public void updateOrderBox(OrderList allOrders) {
+		this.gui.updateOrdersBox(allOrders);
+	}
+
+	@Override
+	public void updateWareHouseBox(HashMap<Integer, IItem> allItems) {
+		this.gui.updateWareHouseBox(allItems);
 	}
 
 }

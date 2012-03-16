@@ -16,6 +16,10 @@ public interface IModel {
 	 */
 	void setController(IListener controller);
 	
+	public int getMaximumWorkers();
+
+	public void setMaximumWorkers(int maximumWorkers);
+	
 	void run() throws IOException;
 	
 	public void initialise() throws IOException;

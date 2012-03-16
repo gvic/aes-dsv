@@ -27,6 +27,10 @@ public interface IListener {
 
 	void initialiseFields(OrderList allOrders, HashMap<Integer, IItem> allItems);
 
-	void updateWorkerBox(String digest);
+	void updateWorkerBox(Integer idWorker, String digest);
+
+	void updateOrderBox(OrderList allOrders);
+
+	void updateWareHouseBox(HashMap<Integer, IItem> allItems);
 
 }

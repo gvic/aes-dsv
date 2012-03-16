@@ -15,6 +15,8 @@ public class Worker implements Runnable {
 	private int totalItemSold;
 	private HashSet<String> customerSet;
 	private IListener controller;
+	private static int workerIdCount;
+	private Integer id;
 
 	public Worker(OrderList allOrders, HashMap<Integer, IItem> allItems) {
 		this.allItems = allItems;
@@ -22,6 +24,7 @@ public class Worker implements Runnable {
 		this.customerSet = new HashSet<String>();
 		this.totalIncome = 0;
 		this.totalItemSold = 0;
+		this.id = new Integer(workerIdCount++);
 		try {
 			FileWriter fstream = new FileWriter("output.txt");
 			writerOutput = new BufferedWriter(fstream);
@@ -33,13 +36,15 @@ public class Worker implements Runnable {
 		}
 	}
 
+	public int getId() {
+		return id;
+	}
+
 	public void setController(IListener controller) {
 		this.controller = controller;
 	}
 
 	public void run() {
-		System.out.println("Processing");
-
 		try {
 			while (allOrders.hasOrder()) {
 				processOneOrder();
@@ -51,7 +56,6 @@ public class Worker implements Runnable {
 			System.out.println("Error while handling the output.txt file");
 			e.printStackTrace();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -70,8 +74,12 @@ public class Worker implements Runnable {
 				this.totalItemSold += order.getQuantity();
 			}
 			this.customerSet.add(order.getCustomerId());
-			this.controller.updateWorkerBox(digest(order, item));
-			Thread.sleep(500);
+			this.controller.updateWorkerBox(id, digest(order, item));
+			this.controller.updateOrderBox(allOrders);
+			this.controller.updateWareHouseBox(allItems);
+			double r = Math.random() + 1;
+			int time = (int) (1000 * r);
+			Thread.sleep(time);
 			this.writerOutput.write(output);
 		}
 	}
