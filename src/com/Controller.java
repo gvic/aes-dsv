@@ -41,9 +41,8 @@ public class Controller implements IListener {
 	}
 
 	@Override
-	public void pauseModel() {
-		// TODO Auto-generated method stub
-		
+	public void stopModel() {
+		this.model.stop();
 	}
 
 	@Override

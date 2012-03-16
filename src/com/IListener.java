@@ -23,7 +23,7 @@ public interface IListener {
 	
 	void runModel() throws IOException;
 
-	void pauseModel();
+	void stopModel();
 
 	void initialiseFields(OrderList allOrders, HashMap<Integer, IItem> allItems);
 

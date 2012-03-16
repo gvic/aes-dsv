@@ -23,4 +23,6 @@ public interface IModel {
 	void run() throws IOException;
 	
 	public void initialise() throws IOException;
+
+	void stop();
 }

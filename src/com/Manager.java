@@ -117,4 +117,13 @@ public class Manager implements IModel {
 		this.maximumWorkers = maximumWorkers;
 	}
 
+	@Override
+	public void stop() {
+		Iterator<Worker> it = workers.iterator();
+		while (it.hasNext()){			
+			Worker w = it.next();
+			w.stop();
+		}
+	}
+
 }
