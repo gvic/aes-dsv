@@ -1,0 +1,48 @@
+ORDER ID : 2      ITEM ID : 503      QUANTITY ORDERED: 10
+CUSTOMER TYPE : VIP
+ORIGINAL COST : 50
+DISCOUNT COST : 47.5
+PROCESS STATUS : Processed 
+---------------------------------------
+
+
+
+
+
+SUMMARY
+
+Total income: 47.5
+Total item sold: 10
+Total customer: 1
+ORDER ID : 4      ITEM ID : 401      QUANTITY ORDERED: 51
+CUSTOMER TYPE : STD
+ORIGINAL COST : 1040.4
+DISCOUNT COST : 936.36
+PROCESS STATUS : Processed 
+---------------------------------------
+
+
+
+
+
+SUMMARY
+
+Total income: 983.86
+Total item sold: 61
+Total customer: 2
+ORDER ID : 5      ITEM ID : 401      QUANTITY ORDERED: 1
+CUSTOMER TYPE : VIP
+ORIGINAL COST : 20.4
+DISCOUNT COST : 19.38
+PROCESS STATUS : Processed 
+---------------------------------------
+
+
+
+
+
+SUMMARY
+
+Total income: 1003.24
+Total item sold: 62
+Total customer: 2

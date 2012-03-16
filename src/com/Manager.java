@@ -96,7 +96,9 @@ public class Manager implements IModel {
 		Iterator<Worker> it = workers.iterator();
 		while (it.hasNext()) {
 			Worker w = it.next();
-			(new Thread(w)).start();
+			Thread t = new Thread(w);
+			t.start();
+			w.resume();
 		}
 	}
 

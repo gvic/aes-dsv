@@ -28,7 +28,7 @@ public class Worker implements Runnable {
 		this.totalItemSold = 0;
 		this.id = new Integer(workerIdCount++);
 		try {
-			FileWriter fstream = new FileWriter("output.txt");
+			FileWriter fstream = new FileWriter("worker-output"+id+".txt");
 			writerOutput = new BufferedWriter(fstream);
 		} catch (IOException e) {
 			System.out
@@ -47,7 +47,7 @@ public class Worker implements Runnable {
 	}
 
 	public void run() {
-		while (!stopped) {
+		while (!stopped && allOrders.hasOrder()) {
 			while (!suspend && allOrders.hasOrder()) {
 				try {
 
@@ -57,10 +57,7 @@ public class Worker implements Runnable {
 					Thread.sleep(time);
 
 					outputSummary();
-					this.writerOutput.close();
-					synchronized (lock) {
-						lock.wait();
-					}
+					
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -69,6 +66,11 @@ public class Worker implements Runnable {
 					return;
 				}
 			}
+		}
+		try {
+			this.writerOutput.close();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
