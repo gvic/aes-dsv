@@ -50,14 +50,10 @@ public class Worker implements Runnable {
 		while (!stopped && allOrders.hasOrder()) {
 			while (!suspend && allOrders.hasOrder()) {
 				try {
-
 					processOneOrder();
 					double r = Math.random() + 1;
 					int time = (int) (1000 * r);
 					Thread.sleep(time);
-
-					outputSummary();
-					
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -68,6 +64,7 @@ public class Worker implements Runnable {
 			}
 		}
 		try {
+			outputSummary();
 			this.writerOutput.close();
 		} catch (IOException e) {
 			e.printStackTrace();
