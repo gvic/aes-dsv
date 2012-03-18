@@ -15,6 +15,7 @@ public class OrderList {
 	 */
 	public OrderList() {
 		orderList = new HashMap<Integer, Order>();
+		orderListArr = null;
 	}
 
 	/**
@@ -24,9 +25,10 @@ public class OrderList {
 	 *            The details of the staff
 	 * @throws Exception
 	 */
-	public void addDetails(Order details){
+	public void addDetails(Order details) {
 		if (orderList.containsKey(details.getId())) {
-			System.out.println("This order ID " + details.getId() + " already exist");
+			System.out.println("This order ID " + details.getId()
+					+ " already exist");
 			System.out.println("It won't be processed");
 		} else {
 			orderList.put(details.getId(), details);
@@ -39,7 +41,7 @@ public class OrderList {
 
 	public Order getNextOrder() {
 		Order order = orderListArr.remove(0);
-		while(order.isProcessed())
+		while (order.isProcessed())
 			order = orderListArr.remove(0);
 		return order;
 
@@ -52,7 +54,7 @@ public class OrderList {
 		StringBuffer allEntries = new StringBuffer();
 		allEntries.append("<html>");
 		for (Order details : orderListArr) {
-			allEntries.append(details.getId()+ " - ");
+			allEntries.append(details.getId() + " - ");
 			allEntries.append(details.getCustomerType() + " - ");
 			allEntries.append(details.getQuantity());
 			allEntries.append("<br>");
@@ -65,4 +67,11 @@ public class OrderList {
 		orderListArr = new ArrayList<Order>(orderList.values());
 	}
 
+	public void clear() {
+		orderList.clear();
+		if(orderListArr!= null )
+			orderListArr.clear();
+		// TODO Auto-generated method stub
+		
+	}
 }

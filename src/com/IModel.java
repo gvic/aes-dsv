@@ -1,6 +1,7 @@
 package com;
 
 import java.io.IOException;
+import java.util.HashSet;
 
 /**
  * MVC's Model interface
@@ -24,5 +25,9 @@ public interface IModel {
 	
 	public void initialise() throws IOException;
 
-	void stop();
+	void pause();
+	
+	public HashSet<Worker> getWorkers();
+
+	public void setWorkerTime(int time);
 }

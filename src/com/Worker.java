@@ -14,11 +14,13 @@ public class Worker implements Runnable {
 	private double totalIncome;
 	private int totalItemSold;
 	private HashSet<String> customerSet;
+	private Statistics stats;
 	private IListener controller;
 	private static int workerIdCount;
 	private Integer id;
 	private final Object lock = new Object();
 	private volatile boolean suspend = false, stopped = false;
+	private volatile int time;
 
 	public Worker(OrderList allOrders, HashMap<Integer, IItem> allItems) {
 		this.allItems = allItems;
@@ -27,15 +29,9 @@ public class Worker implements Runnable {
 		this.totalIncome = 0;
 		this.totalItemSold = 0;
 		this.id = new Integer(workerIdCount++);
-		try {
-			FileWriter fstream = new FileWriter("worker-output"+id+".txt");
-			writerOutput = new BufferedWriter(fstream);
-		} catch (IOException e) {
-			System.out
-					.println("Error while trying to open the output.txt file.");
-			e.printStackTrace();
-			System.exit(0);
-		}
+		// Singleton instantiation.
+		stats = Statistics.getInstance();
+		time = 1000;
 	}
 
 	public int getId() {
@@ -47,28 +43,27 @@ public class Worker implements Runnable {
 	}
 
 	public void run() {
-		while (!stopped && allOrders.hasOrder()) {
-			while (!suspend && allOrders.hasOrder()) {
-				try {
+		try {
+			FileWriter fstream = new FileWriter("worker-output" + id + ".txt");
+			writerOutput = new BufferedWriter(fstream);
+			while (!stopped && allOrders.hasOrder()) {
+				while (!suspend && allOrders.hasOrder()) {
 					processOneOrder();
-					double r = Math.random() + 1;
-					int time = (int) (1000 * r);
 					Thread.sleep(time);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (InterruptedException e) {
-					Thread.currentThread().interrupt();
-					return;
 				}
 			}
-		}
-		try {
 			outputSummary();
 			this.writerOutput.close();
 		} catch (IOException e) {
+			System.out
+					.println("Error while trying to open the output file.");
 			e.printStackTrace();
+			System.exit(0);
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+			return;
 		}
+
 	}
 
 	public void suspend() {
@@ -89,6 +84,10 @@ public class Worker implements Runnable {
 			lock.notifyAll();
 		}
 	}
+	
+	public void setTime(int value){
+		time = value;
+	}
 
 	public void processOneOrder() throws IOException {
 		Order order = allOrders.getNextOrder();
@@ -98,12 +97,15 @@ public class Worker implements Runnable {
 			System.out.println(order);
 
 			String output = this.ouputOrder(order, item);
+			stats.appednToBuffer(output);
 			if (item.getQuantity() >= order.getQuantity()) {
 				item.setQuantity(item.getQuantity() - order.getQuantity());
 				allItems.put(itemId, item);
 				this.totalItemSold += order.getQuantity();
+				stats.addToTotalItemSold(order.getQuantity());
 			}
 			this.customerSet.add(order.getCustomerId());
+			stats.addToCustomerSet(order.getCustomerId());
 			this.controller.updateWorkerBox(id, digest(order, item));
 			this.controller.updateOrderBox(allOrders);
 			this.controller.updateWareHouseBox(allItems);
@@ -130,7 +132,6 @@ public class Worker implements Runnable {
 		double percent = o.getDiscountPercent();
 		double fullPrice = o.getQuantity() * i.getUnitPrice();
 		String cost = df.format(fullPrice - fullPrice * percent);
-		this.totalIncome += Double.parseDouble(cost);
 		String output = "ORDER ID : " + o.getId() + "      ITEM ID : "
 				+ i.getId() + "      QUANTITY ORDERED: " + o.getQuantity()
 				+ "\n";
@@ -143,6 +144,8 @@ public class Worker implements Runnable {
 			output += "CAUSE : Stock running low\n";
 
 		} else {
+			this.totalIncome += Double.parseDouble(cost);
+			stats.addToTotalIncome(Double.parseDouble(cost));
 			output += "PROCESS STATUS : Processed \n";
 		}
 
@@ -157,5 +160,4 @@ public class Worker implements Runnable {
 		writerOutput.write("Total item sold: " + totalItemSold + "\n");
 		writerOutput.write("Total customer: " + customerSet.size() + "\n");
 	}
-
 }

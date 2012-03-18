@@ -6,24 +6,24 @@ PROCESS STATUS : Unprocessed
 CAUSE : Stock running low
 ---------------------------------------
 
-ORDER ID : 4      ITEM ID : 401      QUANTITY ORDERED: 51
-CUSTOMER TYPE : STD
-ORIGINAL COST : 1040.4
-DISCOUNT COST : 936.36
-PROCESS STATUS : Processed 
----------------------------------------
-
-ORDER ID : 6      ITEM ID : 401      QUANTITY ORDERED: 51
-CUSTOMER TYPE : STD
-ORIGINAL COST : 1040.4
-DISCOUNT COST : 936.36
-PROCESS STATUS : Processed 
----------------------------------------
-
-ORDER ID : 8      ITEM ID : 402      QUANTITY ORDERED: 3
+ORDER ID : 3      ITEM ID : 402      QUANTITY ORDERED: 3
 CUSTOMER TYPE : STD
 ORIGINAL COST : 37.02
 DISCOUNT COST : 37.02
+PROCESS STATUS : Processed 
+---------------------------------------
+
+ORDER ID : 5      ITEM ID : 401      QUANTITY ORDERED: 1
+CUSTOMER TYPE : VIP
+ORIGINAL COST : 20.4
+DISCOUNT COST : 19.38
+PROCESS STATUS : Processed 
+---------------------------------------
+
+ORDER ID : 7      ITEM ID : 401      QUANTITY ORDERED: 1
+CUSTOMER TYPE : STD
+ORIGINAL COST : 20.4
+DISCOUNT COST : 20.4
 PROCESS STATUS : Processed 
 ---------------------------------------
 
@@ -33,6 +33,6 @@ PROCESS STATUS : Processed
 
 SUMMARY
 
-Total income: 2576.1
-Total item sold: 105
+Total income: 76.8
+Total item sold: 5
 Total customer: 4
