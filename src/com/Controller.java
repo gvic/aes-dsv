@@ -84,7 +84,6 @@ public class Controller implements IListener {
 		HashSet<Worker> workers = this.model.getWorkers();
 		Iterator<Worker> it = workers.iterator();
 		boolean found = false;
-		int id = -1;
 		Worker w = null;
 		while (it.hasNext() && !found) {
 			w = it.next();
@@ -100,7 +99,6 @@ public class Controller implements IListener {
 		HashSet<Worker> workers = this.model.getWorkers();
 		Iterator<Worker> it = workers.iterator();
 		boolean found = false;
-		int id = -1;
 		Worker w = null;
 		while (it.hasNext() && !found) {
 			w = it.next();
