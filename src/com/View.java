@@ -1,10 +1,7 @@
 package com;
 
 import java.awt.EventQueue;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 
 import javax.swing.GroupLayout;
@@ -13,21 +10,23 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JToolBar;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JSlider;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 
 public class View {
 
-	private JFrame frame;
+	private JFrame frmWarehouse;
+	private JButton toggle;
 	private IListener controller;
-	private JLabel lblOrders;
-	private JLabel lblWorker;
-	private JLabel lblWarehouse;
 	private JLabel lblOrderbox;
 	private JLabel lblWarehousebox;
-	private HashMap<Integer,JLabel> lblWorkers;
+	private JLabel lblWorkerbox;
+	private JLabel lblWorkerbox_1;
 
 	/**
 	 * Launch the application.
@@ -42,7 +41,7 @@ public class View {
 
 		File fi = new File(args[0]);
 		File fo = new File(args[1]);
-		
+
 		if (!fi.exists()) {
 			System.out.println(fi.toString() + " does not exist");
 			System.exit(0);
@@ -52,180 +51,234 @@ public class View {
 			System.exit(0);
 		}
 
-		final IModel manager = new Manager(fi, fo);		
+		final IModel manager = new Manager(fi, fo);
 		final IListener controller = new Controller();
 		manager.setController(controller);
 		controller.setModel(manager);
-		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					int maxWorker = manager.getMaximumWorkers();
-					View window = new View(maxWorker);
+					View window = new View();
 					controller.setView(window);
 					window.setController(controller);
-					window.frame.setVisible(true);
+					window.frmWarehouse.setVisible(true);
 					manager.initialise();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
-		
 	}
 
 	/**
 	 * Create the application.
 	 */
-	public View(int maxWorker) {
-		initialize(maxWorker);
-	}
-
-	/**
-	 * Initialize the contents of the frame.
-	 * @param maxWorker 
-	 */
-	private void initialize(int maxWorker) {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		JMenuBar menuBar = new JMenuBar();
-		frame.setJMenuBar(menuBar);
-		
-		JMenuItem mntmFile = new JMenuItem("File");
-		menuBar.add(mntmFile);
-		
-		JToolBar toolBar = new JToolBar();
-		
-		lblOrders = new JLabel("Orders");
-		lblOrders.setVerticalAlignment(SwingConstants.TOP);
-		
-		lblWorker = new JLabel("Worker");
-		lblWorker.setVerticalAlignment(SwingConstants.TOP);
-		
-		lblWarehouse = new JLabel("Warehouse");
-		lblWarehouse.setVerticalAlignment(SwingConstants.TOP);
-		
-		lblWorkers = new HashMap<Integer, JLabel>();	
-		for (int i = 0; i < maxWorker; i++) {
-			JLabel lbl = new JLabel("Worker "+i);
-			lbl.setVerticalAlignment(SwingConstants.TOP);
-			lblWorkers.put(i,lbl );			
-		}
-		
-		lblOrderbox = new JLabel("orderBox");
-		lblOrderbox.setVerticalAlignment(SwingConstants.TOP);
-		
-		lblWarehousebox = new JLabel("warehouseBox");
-		lblWarehousebox.setVerticalAlignment(SwingConstants.TOP);
-		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
-
-		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.TRAILING)
-				.addComponent(toolBar, GroupLayout.DEFAULT_SIZE, 448, Short.MAX_VALUE)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblOrderbox, GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
-						.addComponent(lblOrders, GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE))
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(18)
-							.addComponent(lblWorker, GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(lblWorkers.get(0), GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(lblWorkers.get(1), GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)))
-					.addGap(18)
-					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(lblWarehouse, GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
-							.addGap(24))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(lblWarehousebox, GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)
-							.addContainerGap()))));
-		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addComponent(toolBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblOrders)
-						.addComponent(lblWorker)
-						.addComponent(lblWarehouse))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblOrderbox, GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
-						.addComponent(lblWarehousebox, GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
-						.addComponent(lblWorkers.get(0), GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE))
-						.addComponent(lblWorkers.get(1), GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)));
-//					.addGap(12)
-//					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-//						.addComponent(lblWorkers.get(1), GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE))
-//					.addGap(12)
-//					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-//							.addComponent(lblWorkers.get(2), GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE))
-//					.addGap(12))
-//		);
-		
-		JButton btnRun = new JButton("Run");
-		btnRun.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				try {
-					controller.runModel();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-			}
-		});
-		toolBar.add(btnRun);
-		
-		JButton btnPause = new JButton("Pause");
-		btnPause.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				controller.stopModel();
-			}
-		});
-		toolBar.add(btnPause);
-		frame.getContentPane().setLayout(groupLayout);
+	public View() {
+		initialize();
 	}
 
 	public void setController(IListener controller2) {
 		this.controller = controller2;
 	}
 
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frmWarehouse = new JFrame();
+		frmWarehouse.setTitle("Warehouse");
+		frmWarehouse.setBounds(100, 100, 902, 523);
+		frmWarehouse.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		JLabel lblOrders = new JLabel("Orders");
+		lblOrders.setVerticalAlignment(SwingConstants.TOP);
+
+		lblOrderbox = new JLabel("OrderBox");
+		lblOrderbox.setVerticalAlignment(SwingConstants.TOP);
+
+		JLabel lblWarehouse = new JLabel("Warehouse");
+
+		lblWarehousebox = new JLabel("WareHousebox");
+		lblWarehousebox.setVerticalAlignment(SwingConstants.TOP);
+
+		lblWorkerbox = new JLabel("workerBox");
+		lblWorkerbox.setVerticalAlignment(SwingConstants.TOP);
+
+		lblWorkerbox_1 = new JLabel("workerBox2");
+		lblWorkerbox_1.setVerticalAlignment(SwingConstants.TOP);
+
+		JButton btnRun_1 = new JButton("Run");
+		btnRun_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				controller.runWorker(1);
+			}
+		});
+
+		JButton btnPause_1 = new JButton("Pause");
+		btnPause_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				controller.pauseWorker(1);
+			}
+		});
+
+		JButton btnRun_2 = new JButton("Run");
+		btnRun_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				controller.runWorker(0);
+			}
+		});
+
+		JButton btnPause_2 = new JButton("Pause");
+		btnPause_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				controller.pauseWorker(0);
+			}
+		});
+		GroupLayout groupLayout = new GroupLayout(frmWarehouse.getContentPane());
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+								.addComponent(lblOrderbox, GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE)
+								.addComponent(lblOrders, GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE))
+							.addGap(18)
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblWarehousebox, GroupLayout.DEFAULT_SIZE, 247, Short.MAX_VALUE)
+								.addComponent(lblWarehouse, GroupLayout.DEFAULT_SIZE, 247, Short.MAX_VALUE)))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addGroup(groupLayout.createSequentialGroup()
+									.addComponent(btnRun_1)
+									.addPreferredGap(ComponentPlacement.UNRELATED)
+									.addComponent(btnPause_1)
+									.addGap(112))
+								.addGroup(groupLayout.createSequentialGroup()
+									.addComponent(lblWorkerbox, GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE)
+									.addPreferredGap(ComponentPlacement.RELATED)))
+							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+								.addGroup(groupLayout.createSequentialGroup()
+									.addComponent(btnRun_2)
+									.addGap(18)
+									.addComponent(btnPause_2)
+									.addPreferredGap(ComponentPlacement.RELATED, 90, Short.MAX_VALUE))
+								.addComponent(lblWorkerbox_1, GroupLayout.DEFAULT_SIZE, 247, Short.MAX_VALUE))))
+					.addContainerGap())
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblOrders)
+						.addComponent(lblWarehouse))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblOrderbox, GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+						.addComponent(lblWarehousebox, GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnRun_1)
+						.addComponent(btnPause_1)
+						.addComponent(btnRun_2)
+						.addComponent(btnPause_2))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE, false)
+						.addComponent(lblWorkerbox, GroupLayout.PREFERRED_SIZE, 224, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblWorkerbox_1, GroupLayout.PREFERRED_SIZE, 224, GroupLayout.PREFERRED_SIZE))
+					.addGap(14))
+		);
+		frmWarehouse.getContentPane().setLayout(groupLayout);
+
+		JMenuBar menuBar = new JMenuBar();
+		frmWarehouse.setJMenuBar(menuBar);
+
+		JButton btnRun = new JButton("Start");
+		btnRun.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				controller.runModel();
+				((JButton)arg0.getSource()).setEnabled(false);
+			}
+		});
+		menuBar.add(btnRun);
+
+		toggle = new JButton("Pause");
+		toggle.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JButton btn = (JButton)arg0.getSource();
+				if(btn.getText() == "Pause"){
+					controller.pauseModel();
+					toggle.setText("Resume");
+				}else if(btn.getText() == "Resume"){
+					toggle.setText("Pause");
+					controller.resumeModel();
+				}
+			}
+		});
+		menuBar.add(toggle);
+		
+		JSlider slider = new JSlider();
+		slider.setMinorTickSpacing(10);
+		slider.setToolTipText("Worker time");
+		slider.setValue(999);
+		slider.setMajorTickSpacing(50);
+		slider.setMaximum(3000);
+		slider.setMinimum(1000);
+		slider.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				JSlider source = (JSlider)e.getSource();
+			    if (!source.getValueIsAdjusting()) {
+			        int time = (int)source.getValue();
+			        controller.setWorkerTime(time);
+			    }
+			}
+		});
+		menuBar.add(slider);
+	}
+
 	public void initialiseOrdersBox(OrderList allOrders) {
 		lblOrderbox.setText(allOrders.listDetails());
-//		//StyledDocument doc = txtpnOrderList.getStyledDocument();
-//		try {
-//			doc.insertString(doc.getLength(), allOrders.listDetails(), null);
-//		} catch (BadLocationException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 	}
 
 	public void initialiseItemsBox(HashMap<Integer, IItem> allItems) {
-		//lblWarehousebox.setText(allItems.toString());		
+
 	}
 
 	public void updateWorkerBox(Integer idWorker, String digest) {
-		lblWorkers.get(idWorker).setText(digest);
-		lblWorkers.get(idWorker).paintImmediately(lblWorkers.get(idWorker).getVisibleRect());
+		if (idWorker == 1) {
+			lblWorkerbox.setText(digest);
+			lblWorkerbox.paintImmediately(lblWorkerbox.getVisibleRect());
+		}else{
+			lblWorkerbox_1.setText(digest);
+			lblWorkerbox_1.paintImmediately(lblWorkerbox_1.getVisibleRect());
+		}
 	}
 
 	public void updateOrdersBox(OrderList allOrders) {
 		lblOrderbox.setText(allOrders.listDetails());
-		lblOrderbox.paintImmediately(lblOrderbox.getVisibleRect());		
+		lblOrderbox.paintImmediately(lblOrderbox.getVisibleRect());
 	}
 
-	public void updateWareHouseBox(HashMap<Integer, IItem> allItems) {
-		
+	public void updateWareHouseBox(String output) {
+		lblWarehousebox.setText(output);
+		lblWarehousebox.paintImmediately(lblWarehousebox.getVisibleRect());
+	}
+
+	public JLabel getLblOrderbox() {
+		return lblOrderbox;
+	}
+
+	public JLabel getLblWarehousebox() {
+		return lblWarehousebox;
+	}
+
+	public JLabel getLblWorkerbox() {
+		return lblWorkerbox;
+	}
+
+	public JLabel getLblWorkerbox_1() {
+		return lblWorkerbox_1;
 	}
 }
-

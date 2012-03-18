@@ -28,6 +28,8 @@ public class BookItem extends AItem {
 	}
 	
 	public String toString(){
-		return title + " by " + author;
+		String sup = super.toString();
+		String out = sup +" "+ title + " by " + author;
+		return out;
 	}
 }

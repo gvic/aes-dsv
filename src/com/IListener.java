@@ -21,9 +21,9 @@ public interface IListener {
 
 	void setModel(IModel manager);
 	
-	void runModel() throws IOException;
+	void runModel();
 
-	void stopModel();
+	void pauseModel();
 
 	void initialiseFields(OrderList allOrders, HashMap<Integer, IItem> allItems);
 
@@ -32,5 +32,13 @@ public interface IListener {
 	void updateOrderBox(OrderList allOrders);
 
 	void updateWareHouseBox(HashMap<Integer, IItem> allItems);
+
+	void runWorker(int i);
+
+	void pauseWorker(int i);
+
+	void setWorkerTime(int time);
+
+	void resumeModel();
 
 }
