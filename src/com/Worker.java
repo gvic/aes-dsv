@@ -55,8 +55,7 @@ public class Worker implements Runnable {
 			outputSummary();
 			this.writerOutput.close();
 		} catch (IOException e) {
-			System.out
-					.println("Error while trying to open the output file.");
+			System.out.println("Error while trying to open the output file.");
 			e.printStackTrace();
 			System.exit(0);
 		} catch (InterruptedException e) {
@@ -84,8 +83,8 @@ public class Worker implements Runnable {
 			lock.notifyAll();
 		}
 	}
-	
-	public void setTime(int value){
+
+	public void setTime(int value) {
 		time = value;
 	}
 
@@ -95,7 +94,7 @@ public class Worker implements Runnable {
 			int itemId = order.getItemId();
 			IItem item = allItems.get(itemId);
 			System.out.println(order);
-
+			boolean success = false;
 			String output = this.ouputOrder(order, item);
 			stats.appednToBuffer(output);
 			if (item.getQuantity() >= order.getQuantity()) {
@@ -103,17 +102,18 @@ public class Worker implements Runnable {
 				allItems.put(itemId, item);
 				this.totalItemSold += order.getQuantity();
 				stats.addToTotalItemSold(order.getQuantity());
+				success = true;
 			}
 			this.customerSet.add(order.getCustomerId());
 			stats.addToCustomerSet(order.getCustomerId());
-			this.controller.updateWorkerBox(id, digest(order, item));
+			this.controller.updateWorkerBox(id, digest(order, item, success));
 			this.controller.updateOrderBox(allOrders);
 			this.controller.updateWareHouseBox(allItems);
 			this.writerOutput.write(output);
 		}
 	}
 
-	private String digest(Order order, IItem item) {
+	private String digest(Order order, IItem item, boolean success) {
 		DecimalFormat df = new DecimalFormat("#.###");
 		double percent = order.getDiscountPercent();
 		double fullPrice = order.getQuantity() * item.getUnitPrice();
@@ -122,7 +122,12 @@ public class Worker implements Runnable {
 		str += "Order " + order.getId() + " Customer " + order.getCustomerId()
 				+ "<br>";
 		str += order.getQuantity() + " * " + item + " = " + cost + "<br>";
-		str += "Successfully processed";
+		if (success) {
+			str += "Successfully processed";
+		}else{
+			str += "Stock running low, order unprocessed";
+		}
+
 		return str;
 
 	}

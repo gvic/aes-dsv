@@ -4,6 +4,6 @@
 
 SUMMARY
 
-Total income: 2034.04
-Total item sold: 120
-Total customer: 6
+Total income: 2071.14
+Total item sold: 127
+Total customer: 8

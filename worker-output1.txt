@@ -26,6 +26,14 @@ DISCOUNT COST : 20.4
 PROCESS STATUS : Processed 
 ---------------------------------------
 
+ORDER ID : 9      ITEM ID : 304      QUANTITY ORDERED: 44
+CUSTOMER TYPE : VIP
+ORIGINAL COST : 264
+DISCOUNT COST : 250.8
+PROCESS STATUS : Unprocessed 
+CAUSE : Stock running low
+---------------------------------------
+
 
 
 
@@ -34,4 +42,4 @@ SUMMARY
 
 Total income: 1023.64
 Total item sold: 63
-Total customer: 2
+Total customer: 3

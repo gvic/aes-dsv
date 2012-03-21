@@ -5,7 +5,6 @@ import java.util.HashMap;
 /**
  * This interface declares the methods needed by 
  * the Controller as an observer of the model 
- * @author victorinox
  * 
  */
 public interface IListener {

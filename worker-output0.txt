@@ -27,12 +27,27 @@ DISCOUNT COST : 37.02
 PROCESS STATUS : Processed 
 ---------------------------------------
 
+ORDER ID : 10      ITEM ID : 312      QUANTITY ORDERED: 7
+CUSTOMER TYPE : STD
+ORIGINAL COST : 37.1
+DISCOUNT COST : 37.1
+PROCESS STATUS : Processed 
+---------------------------------------
+
+ORDER ID : 11      ITEM ID : 312      QUANTITY ORDERED: 7
+CUSTOMER TYPE : STD
+ORIGINAL COST : 37.1
+DISCOUNT COST : 37.1
+PROCESS STATUS : Unprocessed 
+CAUSE : Stock running low
+---------------------------------------
+
 
 
 
 
 SUMMARY
 
-Total income: 1010.4
-Total item sold: 57
-Total customer: 4
+Total income: 1047.5
+Total item sold: 64
+Total customer: 5
