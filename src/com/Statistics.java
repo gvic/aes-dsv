@@ -6,6 +6,13 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.HashSet;
 
+
+/**
+ * Implements the Singleton pattern in order to gather the statistics
+ * from all the workers.
+ * @author victorinox
+ *
+ */
 public class Statistics {
 
 	private static Statistics instance = new Statistics();
