@@ -10,7 +10,6 @@ import java.util.HashSet;
 /**
  * Implements the Singleton pattern in order to gather the statistics
  * from all the workers.
- * @author victorinox
  *
  */
 public class Statistics {

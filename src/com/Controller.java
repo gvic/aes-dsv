@@ -8,10 +8,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
-/**
- * @author victorinox
- * 
- */
 public class Controller implements IListener {
 
 	private View gui;
